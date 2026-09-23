@@ -1,0 +1,76 @@
+# Происхождение внешних данных (data lineage). Дата выгрузки: 2026-09-23.
+# Статус verification: confirmed — значение подтверждено первичным/официальным источником;
+#                      secondary — вторичный источник (СМИ со ссылкой на Росстат/ЦБ);
+#                      check — требуется сверка при следующем обновлении (ревизии Росстата).
+retrieved_at: "2026-09-23"
+indicators:
+  key_rate:
+    title: Ключевая ставка Банка России, % годовых (решения и даты вступления в силу)
+    file: key_rate_decisions.csv
+    transform: среднедневное значение за квартал (quarter mean of daily rate)
+    source: Банк России
+    urls:
+      - https://www.cbr.ru/hd_base/KeyRate/
+      - https://www.cbr.ru/press/keypr/
+      - https://www.cbr.ru/press/pr/?file=24072026_133000key.htm
+    verification: confirmed
+    auto_update: "forkcast fetch-macro (cbr.ru, HTML-таблица ключевой ставки)"
+  usd_rub:
+    title: Официальный курс USD/RUB, среднемесячный
+    file: usd_rub_monthly.csv
+    transform: среднее за квартал из среднемесячных значений
+    source: Банк России (агрегировано mainfin.ru)
+    urls:
+      - https://www.cbr.ru/currency_base/dynamics/
+      - https://mainfin.ru/currency/cb-rf/usd/date/2025
+    verification: secondary
+    auto_update: "forkcast fetch-macro (cbr.ru XML_dynamic.asp, R01235)"
+  gdp_yoy:
+    title: Реальный ВВП, % г/г, квартал
+    file: macro_quarterly.csv
+    source: Росстат
+    urls:
+      - https://rosstat.gov.ru/folder/313/document/285404
+      - https://www.interfax.ru/business/1083314
+      - https://www.interfax.ru/business/1115594
+    verification: check
+    note: "2023–2024 — оценки Росстата до последних ревизий; 2025–2026 — актуальные оценки. Фактор не входит в основную модель."
+  investment_yoy:
+    title: Инвестиции в основной капитал, % г/г в сопоставимых ценах, квартал
+    file: macro_quarterly.csv
+    source: Росстат
+    urls:
+      - https://www.interfax.ru/business/949829
+      - https://www.interfax.ru/business/1012581
+      - https://www.interfax.ru/business/1093663
+      - https://finance.mail.ru/article/kapvlozheniya-padayut-pyatyij-kvartal-podryad-69226613/
+    verification: secondary
+  cpi_yoy_eop:
+    title: Индекс потребительских цен, % г/г на конец квартала
+    file: macro_quarterly.csv
+    source: Росстат
+    urls:
+      - https://www.interfax.ru/business/1083313
+      - https://www.interfax.ru/business/1102548
+    verification: secondary
+  policy_events:
+    title: Регуляторные события (утилизационный сбор на самоходную технику)
+    file: policy_events.csv
+    source: ПП РФ № 81 от 06.02.2016 (ред.), отраслевые СМИ
+    verification: check
+forecasts:
+  cbr_mtf_2026_07:
+    title: Среднесрочный прогноз Банка России (24.07.2026) + решение 11.09.2026
+    urls:
+      - https://www.cbr.ru/press/pr/?file=24072026_133000key.htm
+      - https://www.cbr.ru/press/keypr/
+      - https://www.cbr.ru/Content/Document/File/189920/comment_07052026.pdf
+  cbr_survey_2026_09:
+    title: Макроэкономический опрос Банка России (28.08–01.09.2026)
+    urls:
+      - https://cbr.ru/statistics/ddkp/mo_br/
+  minek_2026_05:
+    title: Сценарные условия Минэкономразвития на 2027–2029 гг. (май 2026)
+    urls:
+      - https://www.interfax.ru/business/1089018
+      - https://www.economy.gov.ru/material/directions/makroec/prognozy_socialno_ekonomicheskogo_razvitiya/
