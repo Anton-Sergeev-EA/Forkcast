@@ -324,7 +324,7 @@ def uncertainty_budget(res, path: Path) -> Path:
 def backtest(res, path: Path) -> Path:
     sc = res.tables["backtest_scores"]
     sub = sc[sc.series.isin(["total_market", "total_ice", "total_electric"])]
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4.2))
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4.2), gridspec_kw={"wspace": 0.3})
     ax = axes[0]
     models = ["Forkcast", "SNaive", "ETS", "SeasonalMean"]
     colors = [BLUE, ORANGE, AQUA, YELLOW]
@@ -335,7 +335,7 @@ def backtest(res, path: Path) -> Path:
         ax.bar(np.arange(3) + (i - 1.5) * width, vals, width=width - 0.02, color=c, label=m)
     ax.axhline(1, color=TEXT2, lw=1, ls=":")
     ax.set_xticks(range(3), [n for _, n in series])
-    ax.set_title("Ошибка MASE в бэктесте (меньше — лучше; 1 = сезонный наивный)")
+    ax.set_title("MASE в бэктесте (меньше — лучше)")
     ax.legend(fontsize=8)
     ax = axes[1]
     bt = res.tables["backtest"]
@@ -346,7 +346,7 @@ def backtest(res, path: Path) -> Path:
     ax.plot(x, b["actual"], color=NEUTRAL, marker="s", ms=5, label="Факт")
     ax.set_xticks(x, [str(p) for p in b["period"]], fontsize=8)
     _thousands(ax)
-    ax.set_title("Рынок: прогноз на 1 квартал вперёд vs факт")
+    ax.set_title("Рынок: прогноз на 1 кв. вперёд и факт")
     ax.legend(fontsize=8)
     fig.tight_layout()
     return _save(fig, path)

@@ -4,16 +4,15 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import numpy as np
 from pptx import Presentation
 from pptx.chart.data import CategoryChartData
 from pptx.dml.color import RGBColor
 from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION, XL_LABEL_POSITION
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
-from pptx.util import Emu, Inches, Pt
+from pptx.util import Inches, Pt
 
-from .text import LIMITATIONS, fint, key_findings, recommendations
+from .text import key_findings, recommendations
 
 INK = RGBColor(0x0B, 0x0B, 0x0B)
 INK2 = RGBColor(0x52, 0x51, 0x4E)
@@ -26,6 +25,15 @@ WHITE = RGBColor(0xFF, 0xFF, 0xFF)
 FONT = "Calibri"
 
 W, H = Inches(13.333), Inches(7.5)
+
+SHORT_LIMITS = [
+    ("Короткая история", "13 кварталов: оценки стабилизированы априорными распределениями, интервалы намеренно широкие."),
+    ("Нет цен, брендов, регионов", "нельзя оценить ценовую эластичность и конкуренцию; доля СИЛАНТ задаётся экспертно."),
+    ("8 сегментов ДВС вместо 9", "в файле нет девятого сегмента из описания кейса; прогноз — по фактической структуре."),
+    ("Округление до 10 шт.", "малые сегменты (6–25 т) шумные; прогнозируются через структуру блока."),
+    ("Структурный сдвиг 2025Q2", "причины (конец цикла замещения, утильсбор, кредитование) разделить нельзя."),
+    ("Условный бэктест", "факторы в проверке — фактические; неопределённость будущих факторов — через сценарии."),
+]
 
 
 def _text(slide, x, y, w, h, text, size=16, bold=False, color=INK, align=PP_ALIGN.LEFT, anchor=MSO_ANCHOR.TOP):
@@ -153,7 +161,7 @@ def build_presentation(res, figs: dict[str, Path], path: Path) -> Path:
 
     # 3. История рынка (нативная диаграмма)
     s = new()
-    _header(s, "Рынок: минус четверть за год, ДВС — вдвое", "Продажи по кварталам, шт.", n)
+    _header(s, f"Рынок {k['market_d']} в {k['y1']} г., ДВС {k['ice_d']}", "Продажи по кварталам, шт.", n)
     cd = CategoryChartData()
     cd.categories = [f"{p.quarter}кв{str(p.year)[2:]}" for p in res.wide.index]
     cd.add_series("ДВС", [float(v) for v in res.wide["total_ice"]])
@@ -245,6 +253,9 @@ def build_presentation(res, figs: dict[str, Path], path: Path) -> Path:
     pl.data_labels.font.size = Pt(10)
     ch.value_axis.major_gridlines.format.line.color.rgb = RGBColor(0xE6, 0xE5, 0xE1)
     ch.category_axis.reverse_order = True
+    ch.value_axis.tick_labels.number_format = '# ##0'
+    ch.value_axis.tick_labels.number_format_is_linked = False
+    ch.value_axis.tick_labels.font.size = Pt(9)
     items = []
     for sc in res.scenarios:
         items.append((sc.title.split("(")[0].strip() + f" ({sc.weight:.0%})",
@@ -278,7 +289,7 @@ def build_presentation(res, figs: dict[str, Path], path: Path) -> Path:
     s = new()
     _header(s, "«Лестница ставок»: при какой ставке рынок вернётся к росту",
             f"Рынок {k['ladder_year']} г. при постоянной ключевой ставке; уровень {k['y1']} г. — при ставке ≤ {k['breakeven']}%", n)
-    _pic(s, figs.get("ladder"), Inches(0.5), Inches(1.5), h=Inches(5.3))
+    _pic(s, figs.get("ladder"), Inches(0.5), Inches(1.6), w=Inches(8.5))
     _bullets(s, Inches(9.3), Inches(1.7), Inches(3.8), Inches(5), [
         "Ставка действует с лагом 1–3 квартала: решения ЦБ 2026 г. определяют рынок первой половины 2027 г.",
         "Триггер пересмотра плана: отклонение ставки от сценария более чем на 1 п.п.",
@@ -293,7 +304,7 @@ def build_presentation(res, figs: dict[str, Path], path: Path) -> Path:
     # 13. Ограничения и развитие
     s = new()
     _header(s, "Ограничения и развитие модели", None, n)
-    _bullets(s, Inches(0.5), Inches(1.2), Inches(7.6), Inches(5.8), [x.split(":")[0] if len(x) > 160 else x for x in LIMITATIONS[:6]], size=12)
+    _bullets(s, Inches(0.5), Inches(1.2), Inches(7.6), Inches(5.8), SHORT_LIMITS, size=13)
     _bullets(s, Inches(8.4), Inches(1.2), Inches(4.7), Inches(5.8), [
         ("Данные", "подключить ввод складов, лизинг спецтехники, импорт погрузчиков (таможня КНР), цены."),
         ("Модель", "доля СИЛАНТ по сегментам из CRM → план продаж, а не только рынка."),
