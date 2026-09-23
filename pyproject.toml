@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "forkcast"
+version = "1.0.0"
+description = "Forkcast — система анализа и сценарного прогнозирования рынка вилочных погрузчиков РФ по сегментам (ЧЗСА / СИЛАНТ)"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Сергеев Антон Валентинович", email = "avsergeev1981@gmail.com" }]
+license = { text = "Proprietary" }
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "scipy>=1.10",
+    "matplotlib>=3.7",
+    "openpyxl>=3.1",
+    "pyyaml>=6.0",
+    "plotly>=5.18",
+    "python-pptx>=0.6.21",
+    "statsmodels>=0.14",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "pytest-cov>=4.1", "ruff>=0.4"]
+
+[project.scripts]
+forkcast = "forkcast.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"

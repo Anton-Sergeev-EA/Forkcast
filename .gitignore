@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+~$*.xlsx
+~$*.pptx
+
+# Промежуточные данные (пересобираются командой `forkcast run`)
+data/processed/*
+!data/processed/.gitkeep
+data/cache/

@@ -1,0 +1,11 @@
+# Проверенный набор версий (Python 3.10–3.12). Установка: pip install -r requirements.txt
+numpy>=1.24,<3
+pandas>=2.0,<4
+scipy>=1.10,<2
+matplotlib>=3.7,<4
+openpyxl>=3.1,<4
+pyyaml>=6.0,<7
+plotly>=5.18,<8
+python-pptx>=0.6.21,<2
+statsmodels>=0.14,<0.16
+pytest>=7.4
