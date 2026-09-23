@@ -348,7 +348,6 @@ def backtest(res, path: Path) -> Path:
     _thousands(ax)
     ax.set_title("Рынок: прогноз на 1 кв. вперёд и факт")
     ax.legend(fontsize=8)
-    fig.tight_layout()
     return _save(fig, path)
 
 
