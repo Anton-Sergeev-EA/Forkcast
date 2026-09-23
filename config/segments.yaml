@@ -1,0 +1,33 @@
+# Справочник сегментов: коды, подписи, принадлежность к линейке СИЛАНТ (1,5–5 т) и параметры планирования.
+blocks:
+  ice: {title: "Автопогрузчики (ДВС)", short: "ДВС"}
+  electric: {title: "Электропогрузчики", short: "Электро"}
+
+segments:
+  ice:
+    - {code: ice_1_1.8,   label: "1–1,8 т",   capacity_min: 1.0, capacity_max: 1.8,  silant: true}
+    - {code: ice_2_2.5,   label: "2–2,5 т",   capacity_min: 2.0, capacity_max: 2.5,  silant: true}
+    - {code: ice_3_3.5,   label: "3–3,5 т",   capacity_min: 3.0, capacity_max: 3.5,  silant: true}
+    - {code: ice_3.8_5,   label: "3,8–5 т",   capacity_min: 3.8, capacity_max: 5.0,  silant: true}
+    - {code: ice_6_8,     label: "6–8 т",     capacity_min: 6.0, capacity_max: 8.0,  silant: false}
+    - {code: ice_8.5_10,  label: "8,5–10 т",  capacity_min: 8.5, capacity_max: 10.0, silant: false}
+    - {code: ice_11_18,   label: "11–18 т",   capacity_min: 11.0, capacity_max: 18.0, silant: false}
+    - {code: ice_20_25,   label: "20–25 т",   capacity_min: 20.0, capacity_max: 25.0, silant: false}
+  electric:
+    - {code: el_1_1.8,    label: "1–1,8 т",   capacity_min: 1.0, capacity_max: 1.8,  silant: true}
+    - {code: el_2_2.5,    label: "2–2,5 т",   capacity_min: 2.0, capacity_max: 2.5,  silant: true}
+    - {code: el_3_3.5,    label: "3–3,5 т",   capacity_min: 3.0, capacity_max: 3.5,  silant: true}
+    - {code: el_3.8_5,    label: "3,8–5 т",   capacity_min: 3.8, capacity_max: 5.0,  silant: true}
+    - {code: el_5.5_8,    label: "5,5–8 т",   capacity_min: 5.5, capacity_max: 8.0,  silant: false}
+    - {code: el_8.5_16,   label: "8,5–16 т",  capacity_min: 8.5, capacity_max: 16.0, silant: false}
+
+# Параметры модуля планирования производства (заполняются заказчиком; значения по умолчанию — иллюстративные).
+planning:
+  # Целевая доля СИЛАНТ в сегменте рынка (доля от продаж). По умолчанию 5% — условная.
+  target_share:
+    default: 0.05
+  # Экономика «газетчика» (newsvendor): Cu — упущенная маржа с единицы при дефиците,
+  # Co — стоимость хранения/омертвления капитала единицы при излишке за горизонт реализации.
+  # Критический квантиль q* = Cu / (Cu + Co). Cu=0.25, Co=0.10 => q* ≈ 0.71.
+  underage_cost: 0.25
+  overage_cost: 0.10
