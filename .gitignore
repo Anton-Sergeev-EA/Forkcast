@@ -19,7 +19,5 @@ htmlcov/
 ~$*.xlsx
 ~$*.pptx
 
-# Промежуточные данные (пересобираются командой `forkcast run`)
-data/processed/*
-!data/processed/.gitkeep
+# Кэш сетевых загрузок
 data/cache/
