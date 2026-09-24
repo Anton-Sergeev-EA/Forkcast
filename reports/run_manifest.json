@@ -1,9 +1,9 @@
 {
   "forkcast_version": "1.0.0",
-  "run_at": "2026-09-23T16:56:33",
-  "python": "3.11.15",
-  "numpy": "2.4.4",
-  "pandas": "3.0.2",
+  "run_at": "2026-09-23T14:34:57",
+  "python": "3.10.12",
+  "numpy": "2.2.6",
+  "pandas": "2.3.3",
   "seed": 20260923,
   "n_draws": 4000,
   "quick": false,
