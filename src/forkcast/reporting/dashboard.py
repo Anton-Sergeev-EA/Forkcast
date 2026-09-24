@@ -42,7 +42,7 @@ def build_dashboard(res, path: Path) -> Path:
         d = res.weighted.draws[ser]
         for lo, hi, a, lab in ((0.025, 0.975, 0.15, "95%"), (0.1, 0.9, 0.25, "80%"), (0.25, 0.75, 0.4, "50%")):
             qlo, qhi = np.quantile(d, lo, 0), np.quantile(d, hi, 0)
-            fig.add_trace(go.Scatter(x=fc_x + fc_x[::-1], y=list(qhi) + list(qlo[::-1]), fill="toself",
+            fig.add_trace(go.Scatter(x=fc_x + fc_x[::-1], y=list(qhi) + list(qlo[::-1]), fill="toself", mode="lines",
                                      fillcolor=f"rgba(42,120,214,{a})", line=dict(width=0), name=f"Интервал {lab}",
                                      hoverinfo="skip", visible=vis))
             idx.append(len(fig.data) - 1)
