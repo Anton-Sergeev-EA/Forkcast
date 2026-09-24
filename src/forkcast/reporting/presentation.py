@@ -115,6 +115,10 @@ def build_presentation(res, figs: dict[str, Path], path: Path) -> Path:
     recs = recommendations(res)
     prs = Presentation()
     prs.slide_width, prs.slide_height = W, H
+    cp = prs.core_properties
+    cp.author = cp.last_modified_by = "Сергеев Антон Валентинович"
+    cp.title = "Forkcast — рынок вилочных погрузчиков РФ: анализ и сценарный прогноз"
+    cp.subject = "ЧЗСА / СИЛАНТ"
     blank = prs.slide_layouts[6]
     n = 0
 

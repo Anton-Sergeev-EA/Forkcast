@@ -161,4 +161,7 @@ def build_excel(res, path: Path) -> Path:
             df = df.replace([np.inf, -np.inf], np.nan)
             df.to_excel(xw, sheet_name=name[:31], index=False)
             _style(xw.sheets[name[:31]], df, **fmt)
+        props = xw.book.properties
+        props.creator = props.lastModifiedBy = "Сергеев Антон Валентинович"
+        props.title = "Forkcast — прогноз рынка вилочных погрузчиков РФ"
     return path
