@@ -1,0 +1,26 @@
+{
+  "forkcast_version": "1.0.0",
+  "run_at": "2026-09-23T16:56:33",
+  "python": "3.11.15",
+  "numpy": "2.4.4",
+  "pandas": "3.0.2",
+  "seed": 20260923,
+  "n_draws": 4000,
+  "quick": false,
+  "market_file": "data/raw/market_forklifts_2023Q1_2026Q1.xlsx",
+  "market_sha256": "f704011b5da5231102670c27f8615be4469c9908ef60b00090dc1d9964302d0c",
+  "external_sha256": {
+    "key_rate_decisions.csv": "a46030b918396276c45a58ddc714bbc5e0f2a7b6303060433701f6b63e66265e",
+    "macro_quarterly.csv": "5607c67af173c9dc27c8e9b266428bf2e0b7004158480ebbfc2f786f9054a0f4",
+    "policy_events.csv": "23fc5734cc02b38fc1aee70da5d113b9649b16cdc11469fcd8708fac6e4e9b75",
+    "usd_rub_monthly.csv": "c925dff1d5731b378f3ad256292af0bf34766d47dbf199ead7ddf4abf7802a59"
+  },
+  "data_last_period": "2026Q1",
+  "scenarios": {
+    "consensus": 0.35,
+    "cbr_base": 0.25,
+    "minek_base": 0.1,
+    "stress": 0.2,
+    "optimistic": 0.1
+  }
+}
