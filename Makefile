@@ -12,9 +12,9 @@ venv:            ## создать виртуальное окружение
 	$(PY) -m venv $(VENV)
 
 install: venv    ## установить зависимости и пакет
-	$(BIN)/pip install -U pip
-	$(BIN)/pip install -r requirements.txt
-	$(BIN)/pip install -e . --no-deps
+	$(BIN)/pip install -U pip setuptools wheel
+	$(BIN)/pip install -r requirements-lock.txt
+	$(BIN)/pip install --no-build-isolation --no-deps -e .
 
 run:             ## полный расчёт и все отчёты
 	$(BIN)/forkcast run

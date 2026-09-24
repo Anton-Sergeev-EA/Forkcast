@@ -93,19 +93,24 @@
 
 ## 3. Быстрый старт
 
-Требования: Python 3.10–3.12, ~300 МБ на зависимости. Интернет нужен только для установки пакетов
-и (опционально) для `fetch-macro`.
+Требования: Python **3.12** (рекомендуется; поддерживаются 3.10–3.12), ~300 МБ на зависимости.
+Интернет нужен только для установки пакетов и (опционально) для `fetch-macro`.
 
 ```bash
-cd forkcast            # корень проекта
+cd forkcast                        # корень проекта
 python3 -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-pip install -e . --no-deps
+pip install -U pip setuptools wheel
+pip install -r requirements-lock.txt           # точные версии → бит-в-бит совпадение с эталоном
+pip install --no-build-isolation --no-deps -e .
 
+pytest -q                          # 27 автотестов
 forkcast run                       # полный расчёт (~30 с) и все отчёты
-pytest -q                          # 24 автотеста
 ```
+
+На Python 3.10–3.11 вместо `requirements-lock.txt` используйте `requirements.txt` (диапазоны версий):
+расчёт корректен, а числа совпадают с эталоном в пределах погрешности Монте-Карло (~0,3%).
+После расчёта `forkcast run` сообщает, совпадает ли окружение с зафиксированным.
 
 Или через `make`: `make install && make run && make test`.
 Или в Docker: `docker build -t forkcast . && docker run --rm -v "$PWD/reports:/app/reports" forkcast run`.
@@ -295,27 +300,31 @@ forkcast update --market /путь/к/файлу_с_новым_квартало�
 │   ├── planning.py          # коридор плана и newsvendor для СИЛАНТ
 │   ├── vintage.py           # архив прогнозов и мониторинг точности
 │   ├── fetch.py             # автообновление ставки и курса с cbr.ru
+│   ├── env.py               # сверка окружения с requirements-lock.txt
 │   ├── pipeline.py          # сквозной конвейер
 │   ├── cli.py               # командная строка
 │   └── reporting/           # графики, Excel, HTML-отчёт, дашборд, презентация
-├── tests/                   # 24 автотеста (pytest)
+├── tests/                   # 27 автотестов (pytest)
 ├── reports/                 # результаты последнего расчёта
 ├── forecasts/vintages/      # архив прогнозов
 ├── docs/methodology.md      # подробное описание методики
 ├── SUMMARY.md               # саммари для заказчика
 ├── Makefile, Dockerfile, .github/workflows/ci.yml
-└── pyproject.toml, requirements.txt
+└── pyproject.toml, requirements.txt, requirements-lock.txt
 ```
 
 ## 12. Воспроизводимость и тесты
 
-- фиксированный `seed` в `config/settings.yaml` — повторный запуск даёт те же числа;
+- фиксированный `seed` в `config/settings.yaml` и зафиксированные версии библиотек в `requirements-lock.txt`
+  (Python 3.12) — повторный запуск на любой машине даёт те же числа до единицы;
+- при каждом запуске окружение сверяется с `requirements-lock.txt`; результат проверки и версии всех пакетов
+  пишутся в манифест, а при расхождении выводится предупреждение;
 - `reports/run_manifest.json`: версии Python/NumPy/pandas, seed, число симуляций, SHA-256 файла рынка и всех
   внешних файлов, веса сценариев;
-- `pytest -q` — 24 теста: парсинг (включая автоопределение нового квартала), восстановление коэффициентов
+- `pytest -q` — 27 тестов: регрессионная проверка ключевых результатов против эталона, парсинг (включая автоопределение нового квартала), восстановление коэффициентов
   на синтетике, согласованность иерархии в каждой симуляции, воспроизводимость, экономические знаки, монотонность
   по ставке, превосходство над наивным прогнозом, сквозной прогон конвейера;
-- CI (GitHub Actions) — тесты на Python 3.10 и 3.12.
+- CI (GitHub Actions) — тесты на Python 3.12 с зафиксированными версиями и на 3.10 с диапазонами.
 
 ## 13. Ограничения
 

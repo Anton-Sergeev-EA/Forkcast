@@ -5,13 +5,19 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.12"]
+        include:
+          - python-version: "3.12"
+            requirements: requirements-lock.txt
+          - python-version: "3.10"
+            requirements: requirements.txt
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
-      - run: pip install -r requirements.txt && pip install -e . --no-deps
+      - run: pip install -U pip setuptools wheel
+      - run: pip install -r ${{ matrix.requirements }}
+      - run: pip install --no-build-isolation --no-deps -e .
       - run: pytest -q
       - run: forkcast run --quick --no-reports
