@@ -115,7 +115,7 @@ pytest -q                          # 24 автотеста
 ```
 reports/forkcast_report.html        аналитический отчёт (открывается в браузере, работает офлайн)
 reports/forkcast_dashboard.html     интерактивный дашборд (выбор любого из 18 рядов)
-reports/forkcast_forecast.xlsx      27 листов: прогнозы, план, сценарии, коэффициенты, бэктест, датасет, источники
+reports/forkcast_forecast.xlsx      26 листов: прогнозы, план, сценарии, коэффициенты, бэктест, датасет, источники
 reports/forkcast_presentation.pptx  презентация (и .pdf, если установлен LibreOffice)
 reports/figures/*.png               графики
 data/processed/*.csv                подготовленный датасет
