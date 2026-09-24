@@ -56,6 +56,15 @@ def cmd_run(args) -> int:
     for k, v in out.items():
         if not k.startswith("fig_"):
             print(f"  {k:10s} {Path(v).relative_to(s.root) if Path(v).is_relative_to(s.root) else v}")
+    env = res.manifest.get("environment", {})
+    if env.get("exact_match"):
+        print("\nОкружение совпадает с requirements-lock.txt: результат воспроизводим бит-в-бит.")
+    else:
+        diff = ", ".join(f"{k} {v['installed']}≠{v['lock']}" for k, v in list(env.get("mismatches", {}).items())[:5])
+        print("\nВНИМАНИЕ: окружение отличается от requirements-lock.txt "
+              f"(Python {env.get('python')}{'; ' + diff if diff else ''}). Расчёт корректен, но возможны "
+              "расхождения с эталоном в пределах погрешности Монте-Карло (~0,3%). "
+              "Для точного совпадения: pip install -r requirements-lock.txt")
     print(f"\nГотово за {time.time() - t0:.1f} с.")
     return 0
 

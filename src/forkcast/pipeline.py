@@ -5,7 +5,6 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
-import platform
 import warnings
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -20,6 +19,7 @@ from . import analysis as A
 from .backtest import rolling_backtest, score
 from .config import Settings, load_settings
 from .data_io import DataQualityReport, read_market_excel, to_wide
+from .env import check_environment
 from .macro import build_features, load_macro
 from .model import ForecastDraws, ForkcastModel
 from .planning import production_corridor, silant_addressable_market
@@ -219,9 +219,7 @@ def run(settings: Settings | None = None, market_file: str | None = None, quick:
     manifest = {
         "forkcast_version": __version__,
         "run_at": datetime.now().isoformat(timespec="seconds"),
-        "python": platform.python_version(),
-        "numpy": np.__version__,
-        "pandas": pd.__version__,
+        "environment": check_environment(s.root),
         "seed": seed,
         "n_draws": n,
         "quick": quick,
