@@ -154,7 +154,7 @@ def run(settings: Settings | None = None, market_file: str | None = None, quick:
     base_sc = next((sc for sc in scenarios if sc.key == "consensus"), scenarios[0])
     base_path = align_path(base_sc, fc_periods)
     n_small = 400 if quick else 1500
-    t["uncertainty_budget"] = uncertainty_budget(model, base_sc, H, n_small, unc)
+    t["uncertainty_budget"] = uncertainty_budget(model, base_sc, H, 400 if quick else 8000, unc)
     t["key_rate_ladder"] = A.key_rate_ladder(model, base_path, H, n=n_small)
     if not quick:
         t["prior_sensitivity"] = A.prior_sensitivity(wide, macro, model_cfg, base_path, H, seed=seed)
